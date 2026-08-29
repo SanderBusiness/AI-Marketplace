@@ -6,6 +6,13 @@ shape (YAML frontmatter with `name`/`description`, then a markdown body) — so 
 plugin keeps one shared `skills/` directory, and only the thin manifest file differs per
 tool.
 
+**Priority order: Claude Code first, Codex CLI second, GitHub Copilot third.** Claude
+Code and Codex support must never be compromised for Copilot's sake. If a future
+requirement (e.g. a stricter length limit, a schema constraint) can't be satisfied by all
+three at once, Copilot support is what gets dropped or degraded — not Claude Code or
+Codex. In practice this hasn't come up yet: nothing about Copilot's constraints (the
+64/1024-char `SKILL.md` limits below) currently forces a compromise on the other two.
+
 ## Per-plugin files
 
 ```
