@@ -18,11 +18,26 @@
 
 ## Disk full / running low
 
-1. `df -h /data/coolify` and `docker system df` to see where space is going.
-2. Usual culprits: accumulated old images (`docker image prune -a -f` — removes *all*
-   unused images, confirm first), build cache (`docker builder prune -f`), or database
-   volumes that genuinely grew (check with `docker exec` into the DB, not by deleting).
-3. Coolify's own backups under `/data/coolify/backups/` can also grow unbounded if
+This is the most recurring Coolify issue on these servers, and the recurring root
+cause is **Docker image/build-cache bloat**, not application data — every deploy
+builds a new image and leaves the old one behind, so unpruned hosts fill up steadily
+over weeks even with no traffic growth. Diagnose in this order:
+
+1. `df -h /data/coolify` and `docker system df` — `docker system df` breaks usage down
+   by images / containers / local volumes / build cache, so it tells you which bucket
+   is actually the problem before you guess.
+2. If **images** or **build cache** dominate (the common case here):
+   - `docker image prune -a -f` — removes *all* images not used by a running
+     container. Safe on a Coolify host since it rebuilds from source on next deploy,
+     but confirm nothing stopped-but-wanted depends on an old image first.
+   - `docker builder prune -f` — clears the BuildKit cache, usually the single
+     biggest reclaimable chunk after repeated deploys.
+   - Run both together periodically (e.g. a cron job) rather than only reactively,
+     since this refills continuously as deploys happen.
+3. If **local volumes** dominate instead: check database volumes with `docker exec`
+   into the DB (never delete a volume to "fix" this) — could be genuine data growth,
+   not bloat.
+4. Coolify's own backups under `/data/coolify/backups/` can also grow unbounded if
    retention isn't configured — check there before assuming it's application data.
 
 ## Proxy not routing to an application (502/504, wrong domain)
