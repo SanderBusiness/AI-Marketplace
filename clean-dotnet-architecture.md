@@ -186,6 +186,14 @@ startup; every `[Handler]`/`[Service]`/`[Helper]` in the whole dependency graph 
 up automatically. Adding a new handler or service never requires touching DI registration
 code.
 
+## Always use the latest versions
+
+Target the latest stable .NET SDK/runtime, and keep every NuGet package (and any other
+tooling — EF Core, analyzers, SDKs, project file schema) on its latest stable version.
+When scaffolding a new project or touching an existing one, check for and apply available
+upgrades rather than leaving versions stale — don't pin to an older version without a
+concrete reason.
+
 ## Applying this
 
 When scaffolding a new .NET project, reviewing one, or advising on where new code should
