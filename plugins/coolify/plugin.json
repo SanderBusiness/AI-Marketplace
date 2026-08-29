@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "coolify",
+  "version": "1.0.0",
+  "description": "Manage self-hosted Coolify servers over SSH: check application/container status, inspect and create volumes, read logs, and troubleshoot deployments and the proxy.",
+  "author": "Sander",
+  "license": "UNLICENSED",
+  "keywords": ["coolify", "docker", "self-hosted", "devops", "ssh"],
+  "skills": ["./skills/coolify-ops"]
+}

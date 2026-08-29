@@ -1,0 +1,10 @@
+{
+  "name": "coolify",
+  "version": "1.0.0",
+  "description": "Manage self-hosted Coolify servers over SSH: check application/container status, inspect and create volumes, read logs, and troubleshoot deployments and the proxy.",
+  "author": {
+    "name": "Sander"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["coolify", "docker", "self-hosted", "devops", "ssh"]
+}
