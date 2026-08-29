@@ -1,0 +1,6 @@
+{
+  "name": "dotnet-architecture",
+  "version": "1.0.0",
+  "description": "Reference architecture and clean-code style for .NET solutions: many small per-responsibility projects, a one-class-per-use-case Handler pattern, thin controllers, and attribute-based DI scanning.",
+  "skills": "../skills"
+}

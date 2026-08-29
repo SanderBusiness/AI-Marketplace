@@ -1,0 +1,11 @@
+{
+  "name": "dotnet-architecture",
+  "displayName": "Clean .NET Architecture",
+  "version": "1.0.0",
+  "description": "Reference architecture and clean-code style for .NET solutions: many small per-responsibility projects, a one-class-per-use-case Handler pattern, thin controllers, and attribute-based DI scanning.",
+  "author": {
+    "name": "Sander"
+  },
+  "license": "UNLICENSED",
+  "keywords": ["dotnet", "architecture", "clean-code", "csharp"]
+}

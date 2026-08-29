@@ -1,0 +1,15 @@
+{
+  "name": "ai-marketplace",
+  "owner": {
+    "name": "Sander"
+  },
+  "description": "Sander's personal marketplace of reusable Claude Code plugins.",
+  "version": "1.0.0",
+  "plugins": [
+    {
+      "name": "dotnet-architecture",
+      "source": "./plugins/dotnet-architecture",
+      "description": "Clean .NET solution architecture: small per-responsibility projects, one-class-per-use-case handlers, thin controllers, attribute-based DI."
+    }
+  ]
+}
