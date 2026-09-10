@@ -4,7 +4,7 @@
 2. Add the three manifests, all with the same `name` and starting at `version: "1.0.0"`:
    - `plugins/<plugin-name>/.claude-plugin/plugin.json`
    - `plugins/<plugin-name>/.codex-plugin/plugin.json` (`skills` field points at
-     `../skills`)
+     `./skills/`, relative to the plugin root; include `author` and Codex `interface` metadata)
    - `plugins/<plugin-name>/plugin.json` (Agent Plugins 1.0 — `skills` field is an array
      of paths, e.g. `["./skills/<skill-name>"]`)
 3. Add one directory per skill under `plugins/<plugin-name>/skills/<skill-name>/`:

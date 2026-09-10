@@ -1,6 +1,20 @@
 {
   "name": "coolify",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Manage self-hosted Coolify servers over SSH: check application/container status, inspect and create volumes, read logs, and troubleshoot deployments and the proxy.",
-  "skills": "../skills"
+  "skills": "./skills/",
+  "author": {
+    "name": "Sander"
+  },
+  "interface": {
+    "displayName": "Coolify",
+    "shortDescription": "Manage self-hosted Coolify deployments",
+    "longDescription": "Manage self-hosted Coolify servers over SSH: check application/container status, inspect and create volumes, read logs, and troubleshoot deployments and the proxy.",
+    "developerName": "Sander",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Inspect the status of my Coolify applications."
+    ]
+  }
 }

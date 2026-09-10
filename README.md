@@ -36,6 +36,7 @@ rather than three copies of the same guidance.
 
 | Plugin | Description |
 |---|---|
+| [`coolify`](./plugins/coolify) | Manage self-hosted Coolify servers over SSH. |
 | [`dotnet-architecture`](./plugins/dotnet-architecture) | Clean .NET solution architecture: small per-responsibility projects, one-class-per-use-case handlers, thin controllers, attribute-based DI. |
 
 ## Using this marketplace
@@ -46,9 +47,18 @@ rather than three copies of the same guidance.
 /plugin install dotnet-architecture@ai-marketplace
 ```
 
-**Codex CLI / GitHub Copilot:** install the plugin from its `plugins/<name>/` directory
-per that tool's plugin-loading mechanism — see `docs/cross-tool-compatibility.md` for the
-manifest each one reads.
+**Codex CLI:**
+```bash
+codex plugin marketplace add https://github.com/SanderBusiness/AI-Marketplace
+codex plugin add dotnet-architecture@ai-marketplace
+codex plugin add coolify@ai-marketplace
+```
+Start a new Codex thread after installing to pick up the skills. To refresh an existing
+installation, run `codex plugin marketplace upgrade ai-marketplace`, then repeat the
+`codex plugin add` commands.
+
+**GitHub Copilot:** install from `plugins/<name>/` using its plugin-loading mechanism.
+See `docs/cross-tool-compatibility.md` for each tool's manifest.
 
 ## Adding a plugin
 

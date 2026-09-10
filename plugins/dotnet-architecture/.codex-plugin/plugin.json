@@ -1,6 +1,20 @@
 {
   "name": "dotnet-architecture",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reference architecture and clean-code style for .NET solutions: many small per-responsibility projects, a one-class-per-use-case Handler pattern, thin controllers, and attribute-based DI scanning.",
-  "skills": "../skills"
+  "skills": "./skills/",
+  "author": {
+    "name": "Sander"
+  },
+  "interface": {
+    "displayName": ".NET Architecture",
+    "shortDescription": "Shared .NET architecture conventions",
+    "longDescription": "Reference architecture and clean-code style for .NET solutions: many small per-responsibility projects, a one-class-per-use-case Handler pattern, thin controllers, and attribute-based DI scanning.",
+    "developerName": "Sander",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Review this .NET solution against the shared architecture conventions."
+    ]
+  }
 }

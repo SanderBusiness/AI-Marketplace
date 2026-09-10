@@ -45,8 +45,10 @@ plugins/<plugin-name>/
 ### Codex CLI
 
 - Plugin manifest lives at `plugins/<plugin>/.codex-plugin/plugin.json` (`name`,
-  `version`, `description`, `skills` — a path to the shared `skills/` directory so content
-  isn't duplicated).
+  `version`, `description`, `author`, `interface`, and `skills`). Set `skills` to
+  `./skills/`: paths resolve from the plugin root, not the `.codex-plugin/` directory.
+  The shared skill content is not duplicated. Include display name, short and long
+  descriptions, developer name, category, capabilities, and default prompts in `interface`.
 - Codex also auto-discovers skills directly from `.agents/skills/<skill>/SKILL.md` at repo
   root, independent of any plugin — not used here since our skills live under
   `plugins/<name>/skills/`, referenced by the `.codex-plugin/plugin.json` path instead.
