@@ -8,6 +8,10 @@ belongs, or writing a controller/handler pair. Prefer **many small, focused proj
 grouped by responsibility over a few large ones — see `references/guiding-principle.md`
 for when to split.
 
+When an identical string literal represents the same domain value in multiple places,
+define it once as a named `const` in the responsible layer and reuse that constant.
+Do not repeat role names, route fragments, status values, or similar shared literals.
+
 Read only the reference file(s) relevant to the task at hand:
 
 - **`references/project-layout.md`** — the standard solution/project layout (`Domain.*`,
