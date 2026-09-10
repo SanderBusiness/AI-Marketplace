@@ -1,7 +1,7 @@
 # Cross-tool compatibility
 
-Every plugin in this marketplace is built to work in **Claude Code**, **Codex CLI**, and
-**GitHub Copilot**. This works because all three tools understand the same `SKILL.md`
+Plugins support **Claude Code** and **Codex CLI**. **GitHub Copilot** plugin
+compatibility is unverified; see the root manifest notes below. This works because all three tools understand the same `SKILL.md`
 shape (YAML frontmatter with `name`/`description`, then a markdown body) — so each
 plugin keeps one shared `skills/` directory, and only the thin manifest file differs per
 tool.
@@ -10,8 +10,7 @@ tool.
 Code and Codex support must never be compromised for Copilot's sake. If a future
 requirement (e.g. a stricter length limit, a schema constraint) can't be satisfied by all
 three at once, Copilot support is what gets dropped or degraded — not Claude Code or
-Codex. In practice this hasn't come up yet: nothing about Copilot's constraints (the
-64/1024-char `SKILL.md` limits below) currently forces a compromise on the other two.
+Codex. The root manifest format is one such conflict; see below.
 
 ## Per-plugin files
 
@@ -21,7 +20,7 @@ plugins/<plugin-name>/
 │   └── plugin.json        # Claude Code manifest
 ├── .codex-plugin/
 │   └── plugin.json        # Codex CLI manifest
-├── plugin.json             # Agent Plugins 1.0 manifest (cross-client incl. Copilot)
+├── plugin.json             # Codex-compatible root manifest (same as .codex-plugin/plugin.json)
 ├── skills/
 │   └── <skill-name>/
 │       ├── SKILL.md        # shared by all three tools
@@ -55,21 +54,18 @@ plugins/<plugin-name>/
 - Codex also reads `AGENTS.md` at repo root for general project instructions, capped at
   32 KiB by default (`project_doc_max_bytes` in `config.toml`).
 
-### GitHub Copilot
+### Root manifest precedence and GitHub Copilot
 
-- Uses the emerging cross-client **Agent Plugins 1.0** standard
-  (`https://agent-plugins.org`): a plain `plugin.json` at the plugin root (not namespaced
-  under a tool-specific directory), with `$schema`, `name`, `version` (semver),
-  `description`, `author`, `license`, `keywords`, and a `skills` array of paths.
-- **Hard limits confirmed from GitHub's docs — respect these when writing any skill:**
-  - `SKILL.md` frontmatter `name`: **max 64 characters**, must exactly match the skill's
-    directory name.
-  - `SKILL.md` frontmatter `description`: **max 1024 characters**.
-- Copilot also reads repo-level `.github/copilot-instructions.md` (freeform, no
-  confirmed cap) and path-scoped `.github/instructions/*.instructions.md` (frontmatter:
-  `applyTo` glob, required) in a *consuming* repository — not applicable to this
-  marketplace repo itself, only to repos that install a plugin from here and want
-  additional repo-specific instructions layered on top.
+The installed Codex CLI reads root `plugin.json` before `.codex-plugin/plugin.json`.
+Keep both files identical and Codex-compatible: `author` is an object and `skills`
+is the string `"./skills/"`. A root manifest with a string author or an array of skill
+paths prevents Codex installation even when the namespaced manifest is valid.
+
+The previous Agent Plugins 1.0 root manifest has therefore been replaced, following
+this repository's Claude Code > Codex > Copilot priority. Copilot plugin installation
+with the new manifest has not been verified. The shared SKILL.md files remain usable
+by skill-capable clients; preserve the 64-character skill name and 1024-character
+description limits. Do not claim verified Copilot plugin compatibility without testing.
 
 ## Keep skill content tool-agnostic
 

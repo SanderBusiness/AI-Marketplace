@@ -1,8 +1,8 @@
 # AI Marketplace
 
 Sander's marketplace of reusable AI coding-agent plugins — guidance, conventions, and
-patterns meant to be shared across projects instead of re-explained every time. Every
-plugin works in **Claude Code**, **Codex CLI**, and **GitHub Copilot**.
+patterns meant to be shared across projects instead of re-explained every time. Plugins support
+**Claude Code** and **Codex CLI**; Copilot plugin compatibility is unverified.
 
 ## Structure
 
@@ -19,7 +19,7 @@ AI-Marketplace/
     └── <plugin-name>/
         ├── .claude-plugin/plugin.json    # Claude Code manifest
         ├── .codex-plugin/plugin.json     # Codex CLI manifest
-        ├── plugin.json                   # Agent Plugins 1.0 manifest (Copilot, cross-client)
+        ├── plugin.json                   # Codex-compatible root manifest (same as namespaced manifest)
         ├── README.md
         └── skills/
             └── <skill-name>/
@@ -57,8 +57,8 @@ Start a new Codex thread after installing to pick up the skills. To refresh an e
 installation, run `codex plugin marketplace upgrade ai-marketplace`, then repeat the
 `codex plugin add` commands.
 
-**GitHub Copilot:** install from `plugins/<name>/` using its plugin-loading mechanism.
-See `docs/cross-tool-compatibility.md` for each tool's manifest.
+**GitHub Copilot:** plugin installation is unverified after correcting the root manifest
+for Codex. See `docs/cross-tool-compatibility.md` for the format conflict and shared skills.
 
 ## Adding a plugin
 

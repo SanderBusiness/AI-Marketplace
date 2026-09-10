@@ -5,8 +5,8 @@
    - `plugins/<plugin-name>/.claude-plugin/plugin.json`
    - `plugins/<plugin-name>/.codex-plugin/plugin.json` (`skills` field points at
      `./skills/`, relative to the plugin root; include `author` and Codex `interface` metadata)
-   - `plugins/<plugin-name>/plugin.json` (Agent Plugins 1.0 — `skills` field is an array
-     of paths, e.g. `["./skills/<skill-name>"]`)
+   - `plugins/<plugin-name>/plugin.json` (identical to the Codex manifest; Codex reads
+     this file first, so do not use a different schema here)
 3. Add one directory per skill under `plugins/<plugin-name>/skills/<skill-name>/`:
    - `SKILL.md` with frontmatter `name` (must equal the directory name, ≤64 characters —
      Copilot's hard limit) and `description` (≤1024 characters — also Copilot's limit).
