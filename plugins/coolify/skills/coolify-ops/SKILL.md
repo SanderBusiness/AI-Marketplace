@@ -24,3 +24,8 @@ Read only the reference file(s) relevant to the task at hand:
 - **`references/troubleshooting.md`** — common failure patterns (unhealthy container,
   stuck deployment, full disk, proxy not routing, permission errors on a volume) and how
   to diagnose each. Load when something is broken rather than just being checked on.
+- **`references/github-actions-image-deploy.md`** — moving an application from
+  Coolify's own git-based build to a GitHub Actions → GHCR (private) → Coolify-pulls
+  pipeline: the one-time server registry login, the workflow shape, creating the
+  Coolify application via the API, and gotchas encountered doing this in practice. Load
+  when asked to set up or migrate a deploy pipeline, not just operate an existing one.
