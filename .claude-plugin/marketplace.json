@@ -4,7 +4,7 @@
     "name": "Sander"
   },
   "description": "Sander's personal marketplace of reusable Claude Code plugins.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "plugins": [
     {
       "name": "dotnet-architecture",
@@ -15,6 +15,11 @@
       "name": "coolify",
       "source": "./plugins/coolify",
       "description": "Manage self-hosted Coolify servers over SSH: application/container status, volumes, logs, and troubleshooting."
+    },
+    {
+      "name": "newrelic",
+      "source": "./plugins/newrelic",
+      "description": "Query and troubleshoot New Relic from the terminal: application logs and errors, NRQL through NerdGraph, APM and browser data, and agent setup checks."
     }
   ]
 }

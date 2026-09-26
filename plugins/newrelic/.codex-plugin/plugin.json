@@ -1,0 +1,20 @@
+{
+  "name": "newrelic",
+  "version": "1.0.0",
+  "description": "Query and troubleshoot New Relic from the terminal: read application logs and errors, run NRQL, check APM and browser data, and verify agent setup. Credentials come from the macOS Keychain or environment variables, never from a repo.",
+  "skills": "./skills/",
+  "author": {
+    "name": "Sander"
+  },
+  "interface": {
+    "displayName": "New Relic",
+    "shortDescription": "Query logs, errors and metrics in New Relic",
+    "longDescription": "Query and troubleshoot New Relic from the terminal: read application logs and errors, run NRQL, check APM and browser data, and verify agent setup. Credentials come from the macOS Keychain or environment variables, never from a repo.",
+    "developerName": "Sander",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Show the latest errors in New Relic."
+    ]
+  }
+}

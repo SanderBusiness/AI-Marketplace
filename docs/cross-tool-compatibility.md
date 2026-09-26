@@ -67,6 +67,22 @@ with the new manifest has not been verified. The shared SKILL.md files remain us
 by skill-capable clients; preserve the 64-character skill name and 1024-character
 description limits. Do not claim verified Copilot plugin compatibility without testing.
 
+## Credentials for plugins that call external services
+
+Plugins such as `newrelic` read credentials from environment variables and never store them
+in this repository. Skill content only names the variables; how to make them available to
+each tool belongs here.
+
+- **Claude Code:** put non-secret values in the `env` block of the user-level
+  `~/.claude/settings.json` so every session has them. For secrets, prefer exporting them in
+  the shell profile that starts Claude Code (or the macOS Keychain fallback some skills
+  support) over a plain-text settings file. Never use project-level settings that are committed.
+- **Codex CLI:** export the variables in the shell profile that starts Codex. By default Codex
+  removes variables whose names contain `KEY`, `SECRET` or `TOKEN` from the environment of
+  the commands it runs (see `shell_environment_policy` in `config.toml`), so a name such as
+  `NEW_RELIC_API_KEY` needs to be allowed there, or the skill's Keychain fallback used.
+  Verify against the installed Codex version.
+
 ## Keep skill content tool-agnostic
 
 Write `SKILL.md` and its `references/*.md` files with no assumption about which tool is

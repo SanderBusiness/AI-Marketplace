@@ -24,7 +24,8 @@ AI-Marketplace/
         └── skills/
             └── <skill-name>/
                 ├── SKILL.md               # short overview, shared by all three tools
-                └── references/            # detail, split by topic, loaded only when needed
+                ├── references/            # detail, split by topic, loaded only when needed
+                └── scripts/               # optional helpers a skill runs (for example newrelic's nrql.sh)
 ```
 
 Skill content lives in one place per plugin (`skills/`) and is kept deliberately short
@@ -37,6 +38,7 @@ rather than three copies of the same guidance.
 | Plugin | Description |
 |---|---|
 | [`coolify`](./plugins/coolify) | Manage self-hosted Coolify servers over SSH. |
+| [`newrelic`](./plugins/newrelic) | Query and troubleshoot New Relic (logs, errors, NRQL, agent setup) using credentials from environment variables. |
 | [`dotnet-architecture`](./plugins/dotnet-architecture) | Clean .NET solution architecture: small per-responsibility projects, one-class-per-use-case handlers, thin controllers, attribute-based DI. |
 
 ## Using this marketplace
@@ -52,6 +54,7 @@ rather than three copies of the same guidance.
 codex plugin marketplace add https://github.com/SanderBusiness/AI-Marketplace
 codex plugin add dotnet-architecture@ai-marketplace
 codex plugin add coolify@ai-marketplace
+codex plugin add newrelic@ai-marketplace
 ```
 Start a new Codex thread after installing to pick up the skills. To refresh an existing
 installation, run `codex plugin marketplace upgrade ai-marketplace`, then repeat the
