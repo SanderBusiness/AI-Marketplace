@@ -1,6 +1,6 @@
 {
   "name": "newrelic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Query and troubleshoot New Relic from the terminal: read application logs and errors, run NRQL, check APM and browser data, and verify agent setup. Credentials come from the macOS Keychain or environment variables, never from a repo.",
   "skills": "./skills/",
   "author": {

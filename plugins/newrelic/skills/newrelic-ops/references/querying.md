@@ -1,14 +1,28 @@
 # Querying with NRQL
 
-Run any NRQL query:
+Run NRQL through the NerdGraph API with `curl`. Define this shell function once per command
+(it reads the credentials described in `credentials.md` and sends the key through stdin so it
+never appears in the process list or in the command text):
 
 ```bash
-scripts/nrql.sh "<NRQL>"            # prints JSON results
-scripts/nrql.sh --table "<NRQL>"    # prints a compact table (needs python3)
+nrql() {
+  local key="${NEW_RELIC_API_KEY:-$(security find-generic-password -s newrelic-api-key -w 2>/dev/null)}"
+  [ -n "$key" ] && [ -n "$NEW_RELIC_ACCOUNT_ID" ] || { echo "New Relic credentials missing, see credentials.md" >&2; return 2; }
+  local host=api.eu.newrelic.com
+  [ "$(echo "${NEW_RELIC_REGION:-eu}" | tr A-Z a-z)" = us ] && host=api.newrelic.com
+  local payload
+  payload=$(python3 -c 'import json,sys; print(json.dumps({"query": "query($id: Int!, $q: Nrql!) { actor { account(id: $id) { nrql(query: $q) { results } } } }", "variables": {"id": int(sys.argv[1]), "q": sys.argv[2]}}))' "$NEW_RELIC_ACCOUNT_ID" "$1")
+  printf 'API-Key: %s\nContent-Type: application/json\n' "$key" |
+    curl -sS --max-time 60 -H @- -d "$payload" "https://$host/graphql" |
+    python3 -c 'import json,sys; d=json.load(sys.stdin); e=d.get("errors"); print("New Relic error: "+"; ".join(x.get("message","?") for x in e)) if e else print(json.dumps(d["data"]["actor"]["account"]["nrql"]["results"], indent=2, ensure_ascii=False))'
+}
+
+nrql "SELECT count(*) FROM TransactionError FACET error.message SINCE 1 hour ago LIMIT 20"
 ```
 
-Exit codes: 0 ok, 2 credentials missing, 3 New Relic returned an error (message printed).
-The script defaults to the EU region and to `NEW_RELIC_ACCOUNT_ID`.
+An EU account queried on the US endpoint (or the other way round) answers `not authorized for
+account region`: set `NEW_RELIC_REGION`. Do not save this function into a file in a project
+repository.
 
 Always include `SINCE` and, for raw events, `LIMIT`. Start narrow, widen only if needed.
 

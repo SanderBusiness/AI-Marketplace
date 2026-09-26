@@ -12,18 +12,12 @@ Read only the reference file(s) relevant to the task:
 - **`references/credentials.md`** — which environment variables hold the API key, account
   id and region, and the rules for handling them. Load first, and whenever a query fails
   with an authentication error. Never print, log, commit or paste the key.
-- **`references/querying.md`** — how to run NRQL with `scripts/nrql.sh` and ready-made
+- **`references/querying.md`** — how to run NRQL with a small `curl` function and ready-made
   queries: recent errors, a failing endpoint, logs around a time, slow transactions,
   browser JS errors, deployments. Load for any lookup.
 - **`references/instrumentation.md`** — how the .NET (APM) and Browser agents are wired in,
   the environment variables they need, and how to confirm data is arriving. Load when asked
   whether New Relic is set up or when data is missing.
-
-Quick start (after the credentials are in place):
-
-```bash
-scripts/nrql.sh "SELECT count(*) FROM TransactionError FACET error.message SINCE 1 hour ago"
-```
 
 Rules:
 - Read-only by default. Queries are safe; creating alerts, dashboards or deployment

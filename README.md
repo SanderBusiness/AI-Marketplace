@@ -24,8 +24,7 @@ AI-Marketplace/
         └── skills/
             └── <skill-name>/
                 ├── SKILL.md               # short overview, shared by all three tools
-                ├── references/            # detail, split by topic, loaded only when needed
-                └── scripts/               # optional helpers a skill runs (for example newrelic's nrql.sh)
+                └── references/            # detail, split by topic, loaded only when needed
 ```
 
 Skill content lives in one place per plugin (`skills/`) and is kept deliberately short
