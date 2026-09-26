@@ -65,5 +65,17 @@ the app package's in a monorepo); add it if missing and verify with
 `git check-ignore -q .demo/x && echo ignored`. Specs and the demo Playwright config are
 committed; `.demo/` never is.
 
+**Clear old demo evidence first.** Before a new run, delete leftovers from earlier demos,
+whatever change they were for — they are never reused:
+- every folder under `.demo/` (stop dev servers still serving from a `.demo/*/base-src`
+  worktree, then `git worktree remove --force` each one and `git worktree prune`);
+- untracked, git-ignored output of earlier demo or recorded acceptance runs elsewhere in
+  the project, such as `test-results/`, `playwright-report/`, or a suite's own
+  `screenshots/`/`videos/` folder. Check with `git ls-files <dir>` and
+  `git check-ignore` first: only delete what is **not tracked**; committed screenshots or
+  reports stay.
+
+Report what was removed and how much space it freed (`du -sh`).
+
 The folder is temporary: it is deleted once the page is published (see `report.md`,
 "Clean up").

@@ -11,7 +11,8 @@ Produces one demo page per change, with four sections in this order:
 4. **Acceptance criteria** — every AC with its status and the evidence that proves it.
 
 All generated media stays inside the project in a git-ignored `.demo/` folder and is
-deleted once the page is published. Everything shown must come from real runs. Never mark an AC as proven without a passing
+deleted once the page is published; leftovers from earlier demos are cleared before each
+new run. Everything shown must come from real runs. Never mark an AC as proven without a passing
 test that asserts it, and never reuse or invent screenshots.
 
 Workflow — load each reference when you reach that step:
