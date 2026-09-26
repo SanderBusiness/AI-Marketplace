@@ -55,6 +55,15 @@ uses). If the change is uncommitted on the main branch itself, the base is `HEAD
 
 ## 5. Output location
 
-All generated media goes in `.demo/<slug>/` at the project root (slug = kebab-case of the
-ticket key or branch). Add `.demo/` to `.gitignore` if it isn't already. Specs are
-committed; media is not.
+Everything the run generates — videos, screenshots, Playwright's `test-results`, the JSON
+report, the base-ref worktree and the assembled page — lives inside the project in
+`.demo/<slug>/` (slug = kebab-case of the ticket key or branch). Never write demo output to
+a temp directory or anywhere outside the project.
+
+Before the first run, make sure `.demo/` is in the project's `.gitignore` (the root one, or
+the app package's in a monorepo); add it if missing and verify with
+`git check-ignore -q .demo/x && echo ignored`. Specs and the demo Playwright config are
+committed; `.demo/` never is.
+
+The folder is temporary: it is deleted once the page is published (see `report.md`,
+"Clean up").

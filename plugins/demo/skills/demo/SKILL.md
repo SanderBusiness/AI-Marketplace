@@ -10,7 +10,8 @@ Produces one demo page per change, with four sections in this order:
 3. **Before / After** — the same screens on the base branch and on the current change.
 4. **Acceptance criteria** — every AC with its status and the evidence that proves it.
 
-Everything shown must come from real runs. Never mark an AC as proven without a passing
+All generated media stays inside the project in a git-ignored `.demo/` folder and is
+deleted once the page is published. Everything shown must come from real runs. Never mark an AC as proven without a passing
 test that asserts it, and never reuse or invent screenshots.
 
 Workflow — load each reference when you reach that step:
@@ -28,7 +29,7 @@ Workflow — load each reference when you reach that step:
    each AC's status (proven / implemented but not proven / failing / not implemented).
    Load before filling in the AC section.
 5. **`references/report.md`** — how to assemble the page from `assets/report-template.html`,
-   handle media files, and publish it. Load last.
+   handle media files, publish it, and clean up the local media afterwards. Load last.
 
 `scripts/collect-results.mjs` turns the Playwright JSON report into a manifest of tests,
 statuses, videos and screenshots (and converts videos to MP4 when `ffmpeg` exists), so the

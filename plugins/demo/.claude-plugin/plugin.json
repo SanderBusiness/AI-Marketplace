@@ -1,6 +1,6 @@
 {
   "name": "demo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Build a demo report for a change in an npm web project: Playwright tests per acceptance criterion, recorded videos and screenshots, before/after comparison, and an HTML page that shows which acceptance criteria are implemented and proven.",
   "author": {
     "name": "Sander"

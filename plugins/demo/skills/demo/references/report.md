@@ -40,7 +40,26 @@ opened locally and published.
 - Otherwise leave `.demo/<slug>/index.html` in place and tell the user to open it; offer
   to zip the folder for sharing.
 
+## Clean up
+
+Videos and screenshots take real disk space, so remove them as soon as they are no longer
+needed:
+
+1. **Only after a successful publish** (the page and its media now live in the published
+   artifact), delete the whole run folder: stop any dev servers still running for the
+   demo, remove the base worktree (`git worktree remove --force .demo/<slug>/base-src`,
+   then `git worktree prune`), and `rm -rf .demo/<slug>`. Remove `.demo/` itself when it
+   is empty.
+2. If publishing failed or isn't available, the local folder *is* the deliverable: keep
+   `.demo/<slug>/` but still delete everything the page doesn't reference
+   (`test-results/`, `report.json`, `base-src/`, raw WebM files that were converted to MP4),
+   and tell the user the folder can be removed once they've shared it.
+3. Confirm with `git status` that nothing from the run is tracked or left untracked
+   outside `.demo/`, and report how much space was freed (`du -sh` before deleting).
+
+Never delete anything outside `.demo/<slug>/`, and never the committed demo specs or config.
+
 ## Final message to the user
 
-Short: link/path, the AC summary line, anything **Failing** or **Not implemented**, and
+Short: link/path, the AC summary line, that the local media was cleaned up (and how much), anything **Failing** or **Not implemented**, and
 what was changed in their repo (Playwright added? new spec files? `.gitignore`).
