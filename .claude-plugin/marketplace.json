@@ -4,7 +4,7 @@
     "name": "Sander"
   },
   "description": "Sander's personal marketplace of reusable Claude Code plugins.",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "plugins": [
     {
       "name": "dotnet-architecture",
@@ -20,6 +20,11 @@
       "name": "newrelic",
       "source": "./plugins/newrelic",
       "description": "Query and troubleshoot New Relic from the terminal: application logs and errors, NRQL through NerdGraph, APM and browser data, and agent setup checks."
+    },
+    {
+      "name": "demo",
+      "source": "./plugins/demo",
+      "description": "Demo reports for npm web projects: Playwright tests per acceptance criterion, videos, before/after screenshots, and an AC checklist page."
     }
   ]
 }

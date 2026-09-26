@@ -1,0 +1,181 @@
+<title>{{TICKET}} demo</title>
+<!--
+  Demo report template. Replace every {{PLACEHOLDER}}; duplicate the blocks marked
+  REPEAT once per item and delete the example ones. Media paths stay relative.
+  Status classes: s-proven | s-unproven | s-failing | s-missing
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    --bg: #f5f7f8;
+    --surface: #ffffff;
+    --ink: #17222b;
+    --muted: #5b6b77;
+    --line: #dbe2e7;
+    --accent: #1f5f8b;
+    --proven: #1e7a4c;   --proven-bg: #e3f3ea;
+    --unproven: #8a5a00; --unproven-bg: #fbf0d9;
+    --failing: #b3261e;  --failing-bg: #fbe4e2;
+    --missing: #56616b;  --missing-bg: #e9edf0;
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0f1519; --surface: #172026; --ink: #e4eaee; --muted: #93a3ae; --line: #2a363e;
+      --accent: #6fb1dd;
+      --proven: #6fd49c;   --proven-bg: #173a29;
+      --unproven: #f0c264; --unproven-bg: #3a2f14;
+      --failing: #ff8a80;  --failing-bg: #3f1d1b;
+      --missing: #a9b4bc;  --missing-bg: #252f36;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0f1519; --surface: #172026; --ink: #e4eaee; --muted: #93a3ae; --line: #2a363e;
+    --accent: #6fb1dd;
+    --proven: #6fd49c;   --proven-bg: #173a29;
+    --unproven: #f0c264; --unproven-bg: #3a2f14;
+    --failing: #ff8a80;  --failing-bg: #3f1d1b;
+    --missing: #a9b4bc;  --missing-bg: #252f36;
+  }
+
+  body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--sans); }
+  .page { max-width: 1120px; margin: 0 auto; padding-inline: 16px; padding-block: 40px 64px; display: grid; gap: 56px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); line-height: 1.15; font-weight: 700; }
+  h2 { font-size: 1.35rem; font-weight: 600; }
+  h3 { font-size: 1rem; font-weight: 600; }
+  p { margin: 0; max-width: 68ch; }
+  .eyebrow { font: 500 .75rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+  .mono { font-family: var(--mono); font-size: .85em; }
+  .muted { color: var(--muted); }
+  section { display: grid; gap: 20px; }
+  .section-head { display: grid; gap: 6px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+
+  header.title { display: grid; gap: 12px; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px 20px; font: .82rem var(--mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font: 600 .78rem/1.4 var(--sans); white-space: nowrap; }
+  .badge::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  .s-proven   { color: var(--proven);   background: var(--proven-bg); }
+  .s-unproven { color: var(--unproven); background: var(--unproven-bg); }
+  .s-failing  { color: var(--failing);  background: var(--failing-bg); }
+  .s-missing  { color: var(--missing);  background: var(--missing-bg); }
+
+  video, .shot img { display: block; width: 100%; max-width: 100%; border-radius: 6px; border: 1px solid var(--line); background: #000; }
+  .shot img { background: var(--surface); }
+  .demo-card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 14px; scroll-margin-top: 16px; }
+  .demo-card header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; }
+  .strip { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+  figure { margin: 0; display: grid; gap: 6px; }
+  figcaption { font-size: .82rem; color: var(--muted); }
+  .error { font: .8rem/1.5 var(--mono); white-space: pre-wrap; color: var(--failing); background: var(--failing-bg); padding: 10px 12px; border-radius: 6px; overflow-x: auto; }
+
+  .compare { display: grid; gap: 28px; }
+  .pair { display: grid; gap: 10px; }
+  .pair-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+  .pair-grid .label { font: 500 .72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  @media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+
+  .table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+  table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  th, td { text-align: left; vertical-align: top; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  th { font: 500 .72rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  td.ac { font: 600 .9rem var(--mono); white-space: nowrap; }
+  a { color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  footer { font-size: .85rem; color: var(--muted); display: grid; gap: 6px; }
+</style>
+
+<main class="page">
+
+  <!-- 1. Title -->
+  <header class="title">
+    <span class="eyebrow">Demo · {{TICKET}}</span>
+    <h1>{{FEATURE_NAME}}</h1>
+    <p>{{ONE_LINE_SUMMARY}} <strong>{{AC_SUMMARY_LINE}}</strong></p>
+    <div class="meta">
+      <span>branch {{BRANCH}}</span>
+      <span>{{BASE_SHA}} → {{HEAD_SHA}}</span>
+      <span>{{DATE}}</span>
+    </div>
+  </header>
+
+  <!-- 2. Demo -->
+  <section id="demo">
+    <div class="section-head">
+      <span class="eyebrow">Demo</span>
+      <h2>What it looks like</h2>
+    </div>
+
+    <!-- Walkthrough (optional) -->
+    <article class="demo-card" id="walkthrough">
+      <header><h3>Full walkthrough</h3></header>
+      <video controls muted playsinline preload="metadata" src="after/media/walkthrough.mp4"></video>
+    </article>
+
+    <!-- REPEAT per AC test -->
+    <article class="demo-card" id="ac1">
+      <header>
+        <h3><span class="mono">AC1</span> · {{TEST_TITLE}}</h3>
+        <span class="badge s-proven">Proven</span>
+      </header>
+      <video controls muted playsinline preload="metadata" src="after/media/{{VIDEO}}"></video>
+      <div class="strip">
+        <!-- REPEAT per screenshot -->
+        <figure class="shot"><img src="after/media/{{SHOT}}.png" alt="{{LABEL}}" loading="lazy"><figcaption>{{LABEL}}</figcaption></figure>
+      </div>
+      <!-- only when failing: <pre class="error">{{ERROR}}</pre> -->
+    </article>
+  </section>
+
+  <!-- 3. Before / After -->
+  <section id="before-after">
+    <div class="section-head">
+      <span class="eyebrow">Before / After</span>
+      <h2>Base {{BASE_SHA}} compared with {{HEAD_SHA}}</h2>
+    </div>
+    <div class="compare">
+      <!-- REPEAT per captured state -->
+      <div class="pair">
+        <h3>{{STATE_NAME}}</h3>
+        <div class="pair-grid">
+          <figure class="shot"><span class="label">Before</span><img src="before/{{STATE}}.png" alt="{{STATE_NAME}} before the change" loading="lazy"><figcaption>{{BEFORE_NOTE}}</figcaption></figure>
+          <figure class="shot"><span class="label">After</span><img src="after-shots/{{STATE}}.png" alt="{{STATE_NAME}} after the change" loading="lazy"><figcaption>{{AFTER_NOTE}}</figcaption></figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. Acceptance criteria -->
+  <section id="acceptance-criteria">
+    <div class="section-head">
+      <span class="eyebrow">Acceptance criteria</span>
+      <h2>{{AC_SUMMARY_LINE}}</h2>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>AC</th><th>Criterion</th><th>Status</th><th>Evidence</th></tr></thead>
+        <tbody>
+          <!-- REPEAT per AC -->
+          <tr>
+            <td class="ac">AC1</td>
+            <td>{{AC_TEXT}}</td>
+            <td><span class="badge s-proven">Proven</span></td>
+            <td><a href="#ac1">Video and screenshots</a><br><span class="mono muted">{{SPEC_FILE}}:{{LINE}}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <p>Tested with Playwright (Chromium, 1280×720) against a local build. {{ENVIRONMENT_NOTES}}</p>
+    <p class="mono">{{SPEC_FILES}}</p>
+  </footer>
+</main>

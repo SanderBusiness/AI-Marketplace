@@ -1,0 +1,20 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "Build a demo report for a change in an npm web project: Playwright tests per acceptance criterion, recorded videos and screenshots, before/after comparison, and an HTML page that shows which acceptance criteria are implemented and proven.",
+  "skills": "./skills/",
+  "author": {
+    "name": "Sander"
+  },
+  "interface": {
+    "displayName": "Demo",
+    "shortDescription": "Playwright-backed demo reports with before/after and AC proof",
+    "longDescription": "Build a demo report for a change in an npm web project: Playwright tests per acceptance criterion, recorded videos and screenshots, before/after comparison, and an HTML page that shows which acceptance criteria are implemented and proven.",
+    "developerName": "Sander",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Make a demo of the changes on this branch and check them against the acceptance criteria."
+    ]
+  }
+}
