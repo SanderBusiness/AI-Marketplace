@@ -51,7 +51,10 @@ for (const top of report.suites ?? []) {
       let video = null;
       const screenshots = [];
       let n = 0;
+      // Playwright's automatic end-of-test screenshot only adds value when the test has no named steps.
+      const hasSteps = (result.attachments ?? []).some((a) => a.contentType === 'image/png' && a.name !== 'screenshot');
       for (const a of result.attachments ?? []) {
+        if (hasSteps && a.name === 'screenshot') continue;
         if (a.name === 'video' && a.path && existsSync(a.path)) {
           video = saveVideo(a.path, base);
         } else if (a.contentType === 'image/png') {

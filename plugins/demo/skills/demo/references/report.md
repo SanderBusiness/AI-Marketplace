@@ -10,7 +10,10 @@
 ## Assemble
 
 Copy `assets/report-template.html` to `.demo/<slug>/index.html` and fill it in. Keep the
-four sections in order and don't add others except a short "How this was tested" footer.
+four sections in order and don't add others except a short "How this was tested" footer
+and, under the AC table, a "Noticed outside the criteria" list for real issues the run
+surfaced that no AC covers (don't drop them, don't turn them into ACs). Write the page in
+the language of the project/client.
 
 1. **Title** — `<ticket> — <feature name>`; subtitle = one-line summary + the AC summary
    line (see `acceptance-criteria.md`); meta line = branch, base SHA → head SHA, date.
@@ -36,6 +39,9 @@ opened locally and published.
 
 - If the environment can publish HTML pages/artifacts, publish `index.html` with the
   media files as supporting files (relative paths as above), then give the user the link.
+  If the publishing tool only accepts files from a particular location, stage a
+  copy-on-write clone (`cp -cR`) of the page and media there and delete that copy right
+  after publishing, together with `.demo/<slug>/`.
   Follow that environment's page conventions (title, theme tokens, dark mode).
 - Otherwise leave `.demo/<slug>/index.html` in place and tell the user to open it; offer
   to zip the folder for sharing.

@@ -5,27 +5,30 @@ and on the current change.
 
 ## 1. Define the screens once
 
-Create `e2e/demo/capture.spec.ts` with a list of states relevant to the change — the
-pages/components the diff touches. Each state is a URL plus optional setup actions:
+Create `e2e-demo/capture.spec.ts` with a list of states relevant to the change — the
+pages/components the diff touches. Each state is a URL, whether to capture the full page
+(avoid it for long lists — a 500-row table becomes a huge image), and optional setup:
 
 ```ts
 import { test } from '@playwright/test';
 
-const states: { name: string; path: string; setup?: (page: import('@playwright/test').Page) => Promise<void> }[] = [
-  { name: 'product-list', path: '/products' },
-  { name: 'filter-open', path: '/products', setup: async (p) => { await p.getByRole('button', { name: 'Category' }).click(); } },
+const states: { name: string; path: string; fullPage: boolean; setup?: (page: import('@playwright/test').Page) => Promise<void> }[] = [
+  { name: 'product-list', path: '/products', fullPage: false },
+  { name: 'filter-open', path: '/products', fullPage: false, setup: async (p) => { await p.getByRole('button', { name: 'Category' }).click(); } },
 ];
+
+// Options that change the browser/context must be top-level, not inside describe().
+test.use({ video: 'off', screenshot: 'off' });
 
 test.describe('capture', () => {
   test.skip(!process.env.DEMO_SHOTS, 'only runs when capturing before/after');
-  test.use({ video: 'off' });
 
   for (const s of states) {
     test(`capture ${s.name}`, async ({ page }) => {
       await page.goto(s.path);
       await page.waitForLoadState('networkidle');
       try { await s.setup?.(page); } catch { /* control may not exist on base */ }
-      await page.screenshot({ path: `${process.env.DEMO_SHOTS}/${s.name}.png`, fullPage: true });
+      await page.screenshot({ path: `${process.env.DEMO_SHOTS}/${s.name}.png`, fullPage: s.fullPage });
     });
   }
 });
@@ -40,7 +43,10 @@ screenshot of whatever the base shows instead. That is the honest "before".
 BASE=$(git merge-base HEAD origin/main)
 git worktree add .demo/<slug>/base-src "$BASE"
 cp .env* .demo/<slug>/base-src/ 2>/dev/null   # untracked env files aren't in the worktree
-cd .demo/<slug>/base-src && npm ci
+# Same lockfile as the current code? Clone node_modules instead of reinstalling
+# (copy-on-write on APFS/btrfs: near-instant, almost no extra disk). Otherwise: npm ci.
+git diff --quiet "$BASE" HEAD -- package-lock.json && cp -cR node_modules .demo/<slug>/base-src/ || (cd .demo/<slug>/base-src && npm ci)
+cd .demo/<slug>/base-src
 npm run dev -- --port 3101 &                    # port override: see preflight.md
 ```
 
@@ -48,14 +54,14 @@ Wait until the port responds, then from the **project root** (the capture spec m
 come from the current code, since the base doesn't have it):
 
 ```bash
-BASE_URL=http://localhost:3101 DEMO_SHOTS=.demo/<slug>/before \
+BASE_URL=http://localhost:3101 DEMO_SLOWMO=0 DEMO_SHOTS="$PWD/.demo/<slug>/before" \
   npx playwright test -c playwright.demo.config.ts capture
 ```
 
 ## 3. Capture the after
 
 ```bash
-DEMO_SHOTS=.demo/<slug>/after-shots npx playwright test -c playwright.demo.config.ts capture
+DEMO_SLOWMO=0 DEMO_SHOTS="$PWD/.demo/<slug>/after-shots" npx playwright test -c playwright.demo.config.ts capture
 ```
 
 (The config's `webServer` starts the current app on port 3100.)
