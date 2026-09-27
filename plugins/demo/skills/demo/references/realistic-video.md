@@ -32,9 +32,17 @@ instantly. `assets/demo-human.ts` fixes this; copy it to `e2e-demo/demo-human.ts
 
 ## Settings
 
-- `slowMo: 0` in the demo config: pacing comes from `Demo` (cursor glides at ~60 fps,
-  pauses before clicks, per-key typing delay). `slowMo` would slow every one of those
-  micro-steps and make the video crawl.
+- `slowMo: 0` in the demo config: pacing comes from `Demo`. `slowMo` would slow every
+  micro-step and make the video crawl.
+- Keep it brisk. A viewer wants to see the change, not wait for it: typing runs at ~45 ms
+  per key, a cursor glide takes at most 0.7 s, and captions stay up only as long as it takes
+  to read them. Don't add `demo.pause()` or long captions between every step; one caption
+  per meaningful moment is enough.
+- Never drive the video with a Playwright call per animation step (a `mouse.move` +
+  `waitForTimeout` per frame, a `keyboard.type` per character). Every call is a round trip,
+  and on a recording they add up to seconds per action while the cursor still looks like it
+  jumps. `Demo` animates the cursor inside the page in one call and types with one
+  `keyboard.type(value, { delay })`.
 - Viewport and video size equal (1280×720) so the overlay is not scaled.
 - The overlay survives navigations (state in `sessionStorage`) and re-attaches itself if a
   framework re-renders `<body>`.

@@ -2,6 +2,11 @@
  * Human-like driving for demo videos: a visible cursor that glides along curved paths, a click
  * ripple, wheel scrolling that eases in and out, typing with per-key delays, and subtitles.
  *
+ * Tempo: with video recording on, every Playwright call is a round trip that costs far more than
+ * its nominal delay (a 16 ms wait per mouse step or per key made a 13-character field take 8 s).
+ * So movements are animated inside the page in one call, and typing is a single `keyboard.type`
+ * with its key delay applied by the driver.
+ *
  * Playwright's recorded video shows no cursor and every `locator.click()` / `fill()` / `goto()`
  * jumps instantly (it even auto-scrolls the target into view). In demo specs, drive the page ONLY
  * through this class; locators are still fine for reading state and for assertions.
@@ -58,7 +63,7 @@ function overlayScript(stateKey: string) {
       const style = document.createElement("style");
       style.id = "__demo-style";
       style.textContent = css;
-      document.head?.appendChild(style) ?? document.body.appendChild(style);
+      (document.head ?? document.body).appendChild(style);
     }
     let cursor = document.getElementById("__demo-cursor");
     let caption = document.getElementById("__demo-caption");
@@ -116,6 +121,30 @@ function overlayScript(stateKey: string) {
   );
   addEventListener("mouseup", () => document.getElementById("__demo-cursor")?.classList.remove("down"), true);
 
+  // Animates the overlay cursor along a quadratic curve in one round trip; the real mouse then
+  // jumps to the end point, which also lands the cursor there (see the mousemove listener).
+  (window as unknown as Record<string, unknown>).__demoGlide = (
+    from: { x: number; y: number },
+    ctrl: { x: number; y: number },
+    to: { x: number; y: number },
+    duration: number
+  ) =>
+    new Promise<void>((resolve) => {
+      ensure();
+      const cursor = document.getElementById("__demo-cursor");
+      if (!cursor || duration <= 0) return resolve();
+      const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      const start = performance.now();
+      const frame = (now: number) => {
+        const t = ease(Math.min(1, (now - start) / duration));
+        cursor.style.left = `${(1 - t) * (1 - t) * from.x + 2 * (1 - t) * t * ctrl.x + t * t * to.x}px`;
+        cursor.style.top = `${(1 - t) * (1 - t) * from.y + 2 * (1 - t) * t * ctrl.y + t * t * to.y}px`;
+        if (now - start < duration) requestAnimationFrame(frame);
+        else resolve();
+      };
+      requestAnimationFrame(frame);
+    });
+
   (window as unknown as Record<string, unknown>).__demoCaption = (text: string) => {
     ensure();
     const caption = document.getElementById("__demo-caption");
@@ -157,10 +186,10 @@ export class Demo {
     else await sleep(this.page, 600);
   }
 
-  /** Shows a subtitle and keeps it up long enough to read (about 55 ms per character, min 1.4 s). */
+  /** Shows a subtitle and keeps it up long enough to read (about 45 ms per character, min 1.2 s). */
   async caption(text: string, holdMs?: number) {
     await this.page.evaluate((t) => (window as unknown as { __demoCaption?: (t: string) => void }).__demoCaption?.(t), text);
-    await sleep(this.page, holdMs ?? Math.max(1400, text.length * 55));
+    await sleep(this.page, holdMs ?? Math.max(1200, text.length * 45));
   }
 
   /** Clears the subtitle. */
@@ -187,44 +216,45 @@ export class Demo {
 
   /** Moves to the element, pauses briefly like a person aiming, then presses and releases. */
   async click(target: Locator, text?: string) {
-    if (text) await this.caption(text, 700);
+    if (text) await this.caption(text, 600);
     await this.moveTo(target);
-    await sleep(this.page, rand(180, 320));
+    await sleep(this.page, rand(100, 180));
     await this.page.mouse.down();
-    await sleep(this.page, rand(70, 120));
+    await sleep(this.page, 60);
     await this.page.mouse.up();
-    await sleep(this.page, 450);
+    await sleep(this.page, 250);
   }
 
-  /** Clicks into a field and types with a human rhythm. */
+  /**
+   * Clicks into a field and types at a brisk human pace (~45 ms per key). One `keyboard.type` call:
+   * a round trip per key would make each character take several hundred ms on video.
+   */
   async type(target: Locator, value: string, text?: string) {
     await this.click(target, text);
-    for (const ch of value) {
-      await this.page.keyboard.type(ch);
-      await sleep(this.page, rand(60, 140));
-    }
-    await sleep(this.page, 400);
+    await this.page.keyboard.type(value, { delay: 45 });
+    await sleep(this.page, 200);
   }
 
   /** Presses a key (e.g. "Escape" to close a menu) with a short pause around it. */
   async press(key: string, text?: string) {
-    if (text) await this.caption(text, 700);
-    await sleep(this.page, 250);
+    if (text) await this.caption(text, 600);
+    await sleep(this.page, 120);
     await this.page.keyboard.press(key);
-    await sleep(this.page, 400);
+    await sleep(this.page, 250);
   }
 
   /** Scrolls with the mouse wheel until the element sits comfortably in view. */
   async scrollTo(target: Locator, text?: string) {
-    if (text) await this.caption(text, 700);
+    if (text) await this.caption(text, 600);
     await target.waitFor({ state: "visible" });
     await this.scrollIntoView(target, true);
-    await sleep(this.page, 400);
+    await sleep(this.page, 250);
   }
 
   /** Scrolls by a distance in pixels (positive = down), eased like a trackpad/wheel flick. */
   async scrollBy(deltaY: number) {
-    const steps = Math.max(8, Math.min(40, Math.round(Math.abs(deltaY) / 30)));
+    // Few, larger wheel steps: each one is a round trip, so 40 small ones crawl on video.
+    const steps = Math.max(6, Math.min(14, Math.round(Math.abs(deltaY) / 60)));
     let done = 0;
     for (let i = 1; i <= steps; i++) {
       const next = Math.round(deltaY * easeInOut(i / steps));
@@ -251,37 +281,45 @@ export class Demo {
     // Keep clear of sticky headers at the top and the subtitle at the bottom.
     const top = vp.height * 0.18;
     const bottom = vp.height * 0.72;
-    for (let i = 0; i < 12; i++) {
-      const box = await target.boundingBox();
-      if (!box) return;
+    let box = await target.boundingBox();
+    for (let i = 0; i < 8 && box; i++) {
       const mid = box.y + box.height / 2;
       const inView = center ? Math.abs(mid - vp.height * 0.45) < vp.height * 0.12 : mid > top && mid < bottom;
       if (inView) return;
       // The wheel scrolls whatever is under the cursor, so make sure it rests over the page content.
       await this.scrollBy(Math.round(mid - vp.height * 0.45));
-      await sleep(this.page, 120);
+      await sleep(this.page, 60);
+      const next = await target.boundingBox();
+      // Didn't move: the page is already at its top or bottom (e.g. a field near the top of the
+      // page), so this is as close as it gets. Without this check every such click burned seconds
+      // on wheel animations that scroll nothing.
+      if (!next || Math.abs(next.y - box.y) < 2) return;
+      box = next;
     }
   }
 
-  /** Moves the cursor along a slightly curved path with ease-in-out timing (~60 fps). */
+  /**
+   * Moves the cursor along a slightly curved path with ease-in-out timing. The overlay cursor is
+   * animated inside the page (one round trip, a true 60 fps); the real mouse follows in one jump.
+   */
   private async glide(to: Point) {
     const from = this.pos;
     const dist = Math.hypot(to.x - from.x, to.y - from.y);
     if (dist < 2) return;
-    const duration = Math.min(1100, 280 + dist * 0.9); // ms: short hops are quick, long ones slower
-    const steps = Math.max(12, Math.round(duration / 16));
+    const duration = Math.min(700, 220 + dist * 0.5); // ms: short hops are quick, long ones slower
     // One control point off the straight line gives the natural arc of a wrist movement.
     const bend = rand(-0.18, 0.18) * dist;
     const nx = -(to.y - from.y) / dist;
     const ny = (to.x - from.x) / dist;
     const ctrl = { x: (from.x + to.x) / 2 + nx * bend, y: (from.y + to.y) / 2 + ny * bend };
-    for (let i = 1; i <= steps; i++) {
-      const t = easeInOut(i / steps);
-      const x = (1 - t) * (1 - t) * from.x + 2 * (1 - t) * t * ctrl.x + t * t * to.x;
-      const y = (1 - t) * (1 - t) * from.y + 2 * (1 - t) * t * ctrl.y + t * t * to.y;
-      await this.page.mouse.move(x, y);
-      await sleep(this.page, 16);
-    }
+    await this.page
+      .evaluate(
+        ([f, c, t, d]) =>
+          (window as unknown as { __demoGlide?: (f: Point, c: Point, t: Point, d: number) => Promise<void> }).__demoGlide?.(f, c, t, d),
+        [from, ctrl, to, duration] as const
+      )
+      .catch(() => {}); // a navigation mid-glide just skips the animation
+    await this.page.mouse.move(to.x, to.y);
     this.pos = to;
   }
 }
