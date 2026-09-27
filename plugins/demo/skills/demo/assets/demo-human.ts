@@ -123,6 +123,35 @@ function overlayScript(stateKey: string) {
 
   // Animates the overlay cursor along a quadratic curve in one round trip; the real mouse then
   // jumps to the end point, which also lands the cursor there (see the mousemove listener).
+  // Scrolls whatever the wheel would scroll at (x, y) - the nearest scrollable ancestor of the element
+  // under the cursor, else the page - frame by frame with ease-in-out, in one round trip. Separate
+  // wheel events from Playwright arrive as visible jumps on the recording.
+  (window as unknown as Record<string, unknown>).__demoScroll = (x: number, y: number, deltaY: number, duration: number) =>
+    new Promise<void>((resolve) => {
+      const page = (document.scrollingElement ?? document.documentElement) as HTMLElement;
+      let el: HTMLElement | null = document.elementFromPoint(x, y) as HTMLElement | null;
+      while (el && el !== page && el !== document.body) {
+        const overflow = getComputedStyle(el).overflowY;
+        const room = deltaY > 0 ? el.scrollHeight - el.clientHeight - el.scrollTop : el.scrollTop;
+        if ((overflow === "auto" || overflow === "scroll") && room > 1) break;
+        el = el.parentElement;
+      }
+      const target = el && el !== document.body ? el : page;
+      const startTop = target.scrollTop;
+      const endTop = Math.max(0, Math.min(target.scrollHeight - target.clientHeight, startTop + deltaY));
+      if (endTop === startTop) return resolve();
+      const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+      const start = performance.now();
+      const frame = (now: number) => {
+        const t = Math.min(1, (now - start) / duration);
+        // "instant" overrides a site's `scroll-behavior: smooth`, which would fight the per-frame steps.
+        target.scrollTo({ top: startTop + (endTop - startTop) * ease(t), behavior: "instant" as ScrollBehavior });
+        if (t < 1) requestAnimationFrame(frame);
+        else resolve();
+      };
+      requestAnimationFrame(frame);
+    });
+
   (window as unknown as Record<string, unknown>).__demoGlide = (
     from: { x: number; y: number },
     ctrl: { x: number; y: number },
@@ -157,7 +186,6 @@ function overlayScript(stateKey: string) {
 }
 
 const sleep = (page: Page, ms: number) => page.waitForTimeout(ms);
-const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 const rand = (min: number, max: number) => min + Math.random() * (max - min);
 
 export class Demo {
@@ -251,17 +279,19 @@ export class Demo {
     await sleep(this.page, 250);
   }
 
-  /** Scrolls by a distance in pixels (positive = down), eased like a trackpad/wheel flick. */
+  /**
+   * Scrolls by a distance in pixels (positive = down), eased like a trackpad flick. The container
+   * under the cursor scrolls, as with a real wheel; the animation runs in the page (see __demoScroll).
+   */
   async scrollBy(deltaY: number) {
-    // Few, larger wheel steps: each one is a round trip, so 40 small ones crawl on video.
-    const steps = Math.max(6, Math.min(14, Math.round(Math.abs(deltaY) / 60)));
-    let done = 0;
-    for (let i = 1; i <= steps; i++) {
-      const next = Math.round(deltaY * easeInOut(i / steps));
-      await this.page.mouse.wheel(0, next - done);
-      done = next;
-      await sleep(this.page, 16);
-    }
+    const duration = Math.min(900, 300 + Math.abs(deltaY) * 0.5);
+    await this.page
+      .evaluate(
+        ([x, y, d, ms]) =>
+          (window as unknown as { __demoScroll?: (x: number, y: number, d: number, ms: number) => Promise<void> }).__demoScroll?.(x, y, d, ms),
+        [this.pos.x, this.pos.y, deltaY, duration] as const
+      )
+      .catch(() => {}); // a navigation mid-scroll just ends it
   }
 
   /** Hides the subtitle for a clean screenshot, then restores it. The cursor stays visible. */

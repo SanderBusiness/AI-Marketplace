@@ -24,7 +24,7 @@ Workflow — load each reference when you reach that step:
    doesn't disturb an existing e2e setup, and write one spec per AC with video and step
    screenshots. Load before writing any test.
 3. **`references/realistic-video.md`** — the videos must look human-operated: visible
-   cursor that glides, eased wheel scrolling, click ripples, subtitles for every step, no
+   cursor that glides, smoothly eased scrolling, click ripples, subtitles for every step, no
    teleporting. Uses `assets/demo-human.ts`. Load together with step 2.
 4. **`references/before-after.md`** — check out the base ref in a separate worktree, run
    it side by side with the current code, and capture the same screens on both. Load
