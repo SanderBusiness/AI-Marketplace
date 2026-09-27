@@ -4,7 +4,7 @@
     "name": "Sander"
   },
   "description": "Sander's personal marketplace of reusable Claude Code plugins.",
-  "version": "1.4.0",
+  "version": "1.3.0",
   "plugins": [
     {
       "name": "dotnet-architecture",
@@ -25,11 +25,6 @@
       "name": "demo",
       "source": "./plugins/demo",
       "description": "Demo reports for npm web projects: Playwright tests per acceptance criterion, videos, before/after screenshots, and an AC checklist page."
-    },
-    {
-      "name": "web-design-guidelines",
-      "source": "./plugins/web-design-guidelines",
-      "description": "UI review against Vercel's Web Interface Guidelines (accessibility, focus, forms, animation, performance, copy), as file:line findings."
     }
   ]
 }
