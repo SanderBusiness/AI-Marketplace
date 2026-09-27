@@ -39,6 +39,7 @@ rather than three copies of the same guidance.
 | [`coolify`](./plugins/coolify) | Manage self-hosted Coolify servers over SSH. |
 | [`demo`](./plugins/demo) | Demo reports for npm web projects: Playwright tests per acceptance criterion, videos, before/after screenshots, AC checklist. |
 | [`newrelic`](./plugins/newrelic) | Query and troubleshoot New Relic (logs, errors, NRQL, agent setup) using credentials from environment variables. |
+| [`web-design-guidelines`](./plugins/web-design-guidelines) | UI review against Vercel's Web Interface Guidelines, as `file:line` findings (adapted, MIT). |
 | [`dotnet-architecture`](./plugins/dotnet-architecture) | Clean .NET solution architecture: small per-responsibility projects, one-class-per-use-case handlers, thin controllers, attribute-based DI. |
 
 ## Using this marketplace
@@ -56,6 +57,7 @@ codex plugin add dotnet-architecture@ai-marketplace
 codex plugin add coolify@ai-marketplace
 codex plugin add newrelic@ai-marketplace
 codex plugin add demo@ai-marketplace
+codex plugin add web-design-guidelines@ai-marketplace
 ```
 Start a new Codex thread after installing to pick up the skills. To refresh an existing
 installation, run `codex plugin marketplace upgrade ai-marketplace`, then repeat the

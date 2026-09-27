@@ -1,0 +1,16 @@
+{
+  "name": "web-design-guidelines",
+  "version": "1.0.0",
+  "description": "Review UI code against Vercel's Web Interface Guidelines: accessibility, focus, forms, animation, typography, performance, navigation state, theming, i18n and copy, reported as file:line findings.",
+  "author": {
+    "name": "Sander"
+  },
+  "license": "MIT",
+  "keywords": [
+    "ui",
+    "ux",
+    "accessibility",
+    "design-review",
+    "web-interface-guidelines"
+  ]
+}
