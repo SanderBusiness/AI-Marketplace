@@ -23,13 +23,16 @@ Workflow — load each reference when you reach that step:
 2. **`references/playwright-setup.md`** — install/configure Playwright in a way that
    doesn't disturb an existing e2e setup, and write one spec per AC with video and step
    screenshots. Load before writing any test.
-3. **`references/before-after.md`** — check out the base ref in a separate worktree, run
+3. **`references/realistic-video.md`** — the videos must look human-operated: visible
+   cursor that glides, eased wheel scrolling, click ripples, subtitles for every step, no
+   teleporting. Uses `assets/demo-human.ts`. Load together with step 2.
+4. **`references/before-after.md`** — check out the base ref in a separate worktree, run
    it side by side with the current code, and capture the same screens on both. Load
    when capturing the comparison.
-4. **`references/acceptance-criteria.md`** — rules for mapping ACs to tests and choosing
+5. **`references/acceptance-criteria.md`** — rules for mapping ACs to tests and choosing
    each AC's status (proven / implemented but not proven / failing / not implemented).
    Load before filling in the AC section.
-5. **`references/report.md`** — how to assemble the page from `assets/report-template.html`,
+6. **`references/report.md`** — how to assemble the page from `assets/report-template.html`,
    handle media files, publish it, and clean up the local media afterwards. Load last.
 
 `scripts/collect-results.mjs` turns the Playwright JSON report into a manifest of tests,

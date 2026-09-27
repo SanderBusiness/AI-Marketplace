@@ -54,14 +54,14 @@ Wait until the port responds, then from the **project root** (the capture spec m
 come from the current code, since the base doesn't have it):
 
 ```bash
-BASE_URL=http://localhost:3101 DEMO_SLOWMO=0 DEMO_SHOTS="$PWD/.demo/<slug>/before" \
+BASE_URL=http://localhost:3101 DEMO_SHOTS="$PWD/.demo/<slug>/before" \
   npx playwright test -c playwright.demo.config.ts capture
 ```
 
 ## 3. Capture the after
 
 ```bash
-DEMO_SLOWMO=0 DEMO_SHOTS="$PWD/.demo/<slug>/after-shots" npx playwright test -c playwright.demo.config.ts capture
+DEMO_SHOTS="$PWD/.demo/<slug>/after-shots" npx playwright test -c playwright.demo.config.ts capture
 ```
 
 (The config's `webServer` starts the current app on port 3100.)

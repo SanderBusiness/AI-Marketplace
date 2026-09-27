@@ -36,7 +36,7 @@ export default defineConfig({
     video: { mode: 'on', size: { width: 1280, height: 720 } },
     screenshot: 'on',
     trace: 'retain-on-failure',
-    launchOptions: { slowMo: Number(process.env.DEMO_SLOWMO ?? 300) },
+    // No slowMo: the Demo helper paces the video (see realistic-video.md).
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: process.env.BASE_URL ? undefined : {
@@ -48,7 +48,7 @@ export default defineConfig({
 });
 ```
 
-`slowMo` makes the video watchable; set `DEMO_SLOWMO=0` for a fast verification run. If
+Don't use `slowMo`; `realistic-video.md` explains why and how pacing works. If
 the project uses a `.js`/`.mjs` config style, match it. If the project's own e2e config uses
 a production build (`build && start`) instead of the dev server, do the same — it is what
 the existing suite found to be stable.
@@ -92,7 +92,11 @@ Put specs in `e2e-demo/<slug>.spec.ts`. Each test title starts with its AC numbe
 results can be mapped back: `AC1 — <short wording>`. A test that covers two ACs is split
 into two tests; an AC that needs several scenarios gets `AC3a`, `AC3b`.
 
-Use a `step` helper so every meaningful moment becomes a named screenshot attached to the
+Drive every interaction through the `Demo` helper from `realistic-video.md` (visible
+cursor, smooth movement and scrolling, subtitles). The example below shows the test
+structure; in a real spec replace each `.click()` with `demo.click(locator, 'subtitle')`.
+
+Use a `shot` helper so every meaningful moment becomes a named screenshot attached to the
 test result (these become the screenshot strip under each video):
 
 ```ts
