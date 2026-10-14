@@ -22,6 +22,11 @@
       "description": "Query and troubleshoot New Relic from the terminal: application logs and errors, NRQL through NerdGraph, APM and browser data, and agent setup checks."
     },
     {
+      "name": "traces",
+      "source": "./plugins/traces",
+      "description": "Query and troubleshoot Traces (self-hosted observability, a New Relic replacement) from the terminal: errors, requests and traces, logs, NRQL, dashboards, and OpenTelemetry setup."
+    },
+    {
       "name": "demo",
       "source": "./plugins/demo",
       "description": "Demo reports for npm web projects: Playwright tests per acceptance criterion, videos, before/after screenshots, and an AC checklist page."

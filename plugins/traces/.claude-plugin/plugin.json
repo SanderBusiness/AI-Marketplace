@@ -1,0 +1,17 @@
+{
+  "name": "traces",
+  "version": "1.0.0",
+  "description": "Query and troubleshoot Traces (self-hosted observability, an OpenTelemetry-based New Relic replacement) from the terminal: read errors, requests, traces and logs, run NRQL, manage dashboards, and set up OpenTelemetry instrumentation. The API token comes from the macOS Keychain or environment variables, never from a repo.",
+  "author": {
+    "name": "Sander"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "traces",
+    "observability",
+    "opentelemetry",
+    "logs",
+    "nrql",
+    "apm"
+  ]
+}
