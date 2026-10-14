@@ -40,6 +40,7 @@ rather than three copies of the same guidance.
 | [`demo`](./plugins/demo) | Demo reports for npm web projects: Playwright tests per acceptance criterion, videos, before/after screenshots, AC checklist. |
 | [`newrelic`](./plugins/newrelic) | Query and troubleshoot New Relic (logs, errors, NRQL, agent setup) using credentials from environment variables. |
 | [`dotnet-architecture`](./plugins/dotnet-architecture) | Clean .NET solution architecture: small per-responsibility projects, one-class-per-use-case handlers, thin controllers, attribute-based DI. |
+| [`frontend-architecture`](./plugins/frontend-architecture) | Clean React frontend architecture: small single-responsibility components, logic in hooks, typed TanStack Query data layer, URL as state, theme tokens, accessibility, mobile-first PWA. |
 
 ## Using this marketplace
 
@@ -53,6 +54,7 @@ rather than three copies of the same guidance.
 ```bash
 codex plugin marketplace add https://github.com/SanderBusiness/AI-Marketplace
 codex plugin add dotnet-architecture@ai-marketplace
+codex plugin add frontend-architecture@ai-marketplace
 codex plugin add coolify@ai-marketplace
 codex plugin add newrelic@ai-marketplace
 codex plugin add demo@ai-marketplace
