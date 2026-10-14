@@ -1,7 +1,7 @@
-# frontend-architecture
+# react-architecture
 
 Reference architecture and clean-code style for React + TypeScript + Vite + MUI frontends. See
-[`skills/clean-frontend-architecture/SKILL.md`](./skills/clean-frontend-architecture/SKILL.md)
+[`skills/clean-react-architecture/SKILL.md`](./skills/clean-react-architecture/SKILL.md)
 for the content — it's split into small, situationally-loaded reference files rather than
 one long document.
 

@@ -1,13 +1,13 @@
 {
-  "name": "frontend-architecture",
-  "version": "1.0.0",
+  "name": "react-architecture",
+  "version": "1.1.0",
   "description": "React 19 + TypeScript + Vite + MUI frontend conventions: small single-responsibility components, logic in hooks and pure functions, typed TanStack Query data layer, URL as state, theme tokens, accessibility, mobile-first PWA, and testing with Vitest.",
   "skills": "./skills/",
   "author": {
     "name": "Sander"
   },
   "interface": {
-    "displayName": "Frontend Architecture",
+    "displayName": "React Architecture",
     "shortDescription": "Shared React frontend conventions",
     "longDescription": "React 19 + TypeScript + Vite + MUI frontend conventions: small single-responsibility components, logic in hooks and pure functions, typed TanStack Query data layer, URL as state, theme tokens, accessibility, mobile-first PWA, and testing with Vitest.",
     "developerName": "Sander",

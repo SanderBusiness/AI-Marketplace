@@ -1,5 +1,5 @@
 ---
-name: clean-frontend-architecture
+name: clean-react-architecture
 description: Reference architecture for React frontends (React + TypeScript + Vite + MUI + TanStack Query + React Router, PWA, Vitest/Testing Library, oxlint) — small single-responsibility components, logic in hooks and pure functions, one typed API module per backend controller/feature, URL as state, theme tokens, accessibility, mobile-first and PWA rules. Load this when scaffolding a React frontend, deciding where a component/hook/API module belongs, or writing or reviewing React components, hooks, API modules, theming, or frontend tests.
 ---
 
@@ -37,6 +37,8 @@ Read only the reference file(s) relevant to the task at hand:
   Load for layout on phones, `index.html`, or PWA config.
 - **`references/accessibility.md`** — semantics, labels, focus, keyboard. Load when building interactive UI.
 - **`references/testing.md`** — Vitest + Testing Library conventions. Load when writing tests.
+- **`references/nextjs.md`** — Next.js (App Router) for SEO/public sites: when to choose it over Vite,
+  server vs client components, metadata, sitemap, JSON-LD, consent-gated scripts, Docker. Load for SEO/public sites built with Next.js.
 - **`references/tooling.md`** — versions, scripts, tsconfig, oxlint, Vite config. Load when
   scaffolding or checking dependencies.
 

@@ -32,8 +32,8 @@
       "description": "Demo reports for npm web projects: Playwright tests per acceptance criterion, videos, before/after screenshots, and an AC checklist page."
     },
     {
-      "name": "frontend-architecture",
-      "source": "./plugins/frontend-architecture",
+      "name": "react-architecture",
+      "source": "./plugins/react-architecture",
       "description": "Clean React frontend architecture: small single-responsibility components, logic in hooks, typed TanStack Query data layer, URL as state, theme tokens, accessibility, mobile-first PWA, Vitest."
     }
   ]
