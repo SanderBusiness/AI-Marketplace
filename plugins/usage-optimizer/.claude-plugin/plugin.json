@@ -1,0 +1,16 @@
+{
+  "name": "usage-optimizer",
+  "version": "1.0.0",
+  "description": "Cut Claude Code usage without hurting quality: pick the cheapest suitable model per task, delegate to subagents efficiently, keep context small, and manage /clear, /compact and memory. Includes ready-to-copy cheap agent definitions and a before/after checklist.",
+  "author": {
+    "name": "Sander"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "tokens",
+    "usage",
+    "model-selection",
+    "subagents",
+    "context"
+  ]
+}

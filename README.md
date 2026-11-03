@@ -42,6 +42,7 @@ rather than three copies of the same guidance.
 | [`traces`](./plugins/traces) | Query and troubleshoot Traces, the self-hosted New Relic replacement (errors, traces, logs, NRQL, dashboards, OpenTelemetry setup) using a token from environment variables. |
 | [`dotnet-architecture`](./plugins/dotnet-architecture) | Clean .NET solution architecture: small per-responsibility projects, one-class-per-use-case handlers, thin controllers, attribute-based DI. |
 | [`react-architecture`](./plugins/react-architecture) | Clean React frontend architecture: small single-responsibility components, logic in hooks, typed TanStack Query data layer, URL as state, theme tokens, accessibility, mobile-first PWA. |
+| [`usage-optimizer`](./plugins/usage-optimizer) | Spend fewer tokens without losing quality: model selection per task, lean subagent delegation, `/clear`/`/compact` and memory guidance, machine-wide setup templates. |
 
 ## Using this marketplace
 
@@ -60,6 +61,7 @@ codex plugin add coolify@ai-marketplace
 codex plugin add newrelic@ai-marketplace
 codex plugin add traces@ai-marketplace
 codex plugin add demo@ai-marketplace
+codex plugin add usage-optimizer@ai-marketplace
 ```
 Start a new Codex thread after installing to pick up the skills. To refresh an existing
 installation, run `codex plugin marketplace upgrade ai-marketplace`, then repeat the
