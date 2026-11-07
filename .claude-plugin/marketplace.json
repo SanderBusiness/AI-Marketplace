@@ -40,6 +40,11 @@
       "name": "usage-optimizer",
       "source": "./plugins/usage-optimizer",
       "description": "Reduce Claude Code token and quota usage without hurting quality: model selection, lean subagent delegation, context/session management, and machine-wide setup templates."
+    },
+    {
+      "name": "issue-queue",
+      "source": "./plugins/issue-queue",
+      "description": "Work through GitHub issues one by one, each in a clean context (fresh subagent or its own Terminal window), with local commits per issue and one combined push at the end."
     }
   ]
 }

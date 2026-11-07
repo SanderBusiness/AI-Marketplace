@@ -43,6 +43,7 @@ rather than three copies of the same guidance.
 | [`dotnet-architecture`](./plugins/dotnet-architecture) | Clean .NET solution architecture: small per-responsibility projects, one-class-per-use-case handlers, thin controllers, attribute-based DI. |
 | [`react-architecture`](./plugins/react-architecture) | Clean React frontend architecture: small single-responsibility components, logic in hooks, typed TanStack Query data layer, URL as state, theme tokens, accessibility, mobile-first PWA. |
 | [`usage-optimizer`](./plugins/usage-optimizer) | Spend fewer tokens without losing quality: model selection per task, lean subagent delegation, `/clear`/`/compact` and memory guidance, machine-wide setup templates. |
+| [`issue-queue`](./plugins/issue-queue) | Work through GitHub issues one by one, each in a clean context (fresh subagent or its own Terminal window), local commits per issue, one combined push at the end. |
 
 ## Using this marketplace
 

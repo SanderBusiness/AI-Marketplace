@@ -1,0 +1,16 @@
+{
+  "name": "issue-queue",
+  "version": "1.0.0",
+  "description": "Work through a list of GitHub issues one by one, each in a clean context (a fresh subagent or its own visible Terminal window), so no task drags the context of the previous ones along. Local commits per issue, one combined push at the end.",
+  "author": {
+    "name": "Sander"
+  },
+  "license": "UNLICENSED",
+  "keywords": [
+    "github",
+    "issues",
+    "subagents",
+    "tokens",
+    "workflow"
+  ]
+}
