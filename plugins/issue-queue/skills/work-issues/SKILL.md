@@ -53,6 +53,7 @@ Give the goal, not a history. Keep it to:
 - One summary table: issue, status (done / already done / needs decision / skipped), commit, tests.
 - List the owner decisions that are open.
 - Do **not** push per issue. Push once at the end, and only if the user's rules allow it (repos with a "single combined push" rule: one push of everything, after the user agrees).
+- **Close finished issues after the push**, without asking: `gh issue close N --comment "Done in <hash>: <one line>"`. Close only issues that are really done and pushed. Leave open, and say why: an unconfirmed root cause, an open product decision, a research-only outcome, or an on-hold marker. Never delete issues. If the push fails, close nothing.
 - Suggest `/clear` before the user switches to unrelated work.
 
 ## Why this saves tokens
