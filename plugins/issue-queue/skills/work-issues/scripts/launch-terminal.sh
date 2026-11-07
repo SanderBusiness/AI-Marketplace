@@ -20,7 +20,7 @@ Rules: do NOT push. Do NOT mutate production data (reading is fine, never print 
 When finished, give a short summary (status, what changed with path:line, tests, open questions), then as your very last step run: touch $MARKER
 PROMPT_EOF
 
-CMD="cd '$REPO' && claude --permission-mode auto --model $MODEL \"\$(cat '$PROMPT')\""
+CMD="cd '$REPO' && claude --name 'gh #$N' --permission-mode auto --model $MODEL \"\$(cat '$PROMPT')\""
 ESC=$(printf '%s' "$CMD" | sed 's/\\/\\\\/g; s/"/\\"/g')
 osascript -e 'tell application "Terminal"' -e 'activate' -e "do script \"$ESC\"" -e 'end tell' >/dev/null
 echo "launched #$N, marker: $MARKER"

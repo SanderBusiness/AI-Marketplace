@@ -24,7 +24,7 @@ Goal: finish N issues without one growing context. The orchestrator (you) stays 
 ## 2. Pick the mode
 
 - **Subagent mode** (default): `Agent` with `subagent_type: "general-purpose"` and `model: "sonnet"`, one per issue, **sequentially** (wait for the completion notice before starting the next). Never two at once: they share one working tree and one `main`.
-- **Terminal mode** (macOS, when the user wants to watch or answer questions): run `scripts/launch-terminal.sh <issue[,issue...]> <repo-dir> <work-dir>` from this skill's folder (a group is comma-separated, e.g. `89,92,93`; its marker is `done-89-92-93`). It opens a Terminal.app window with an interactive `claude --permission-mode auto --model sonnet` session. The session touches `<work-dir>/done-<issue>` as its last step. Wait with a background command, not polling:
+- **Terminal mode** (macOS, when the user wants to watch or answer questions): run `scripts/launch-terminal.sh <issue[,issue...]> <repo-dir> <work-dir>` from this skill's folder (a group is comma-separated, e.g. `89,92,93`; its marker is `done-89-92-93`). It names the session `gh #<issue>` (`claude --name`, e.g. `gh #95` or `gh #89,92,93`), so the issue key shows in the window title, the prompt box and `/resume`. It opens a Terminal.app window with an interactive `claude --permission-mode auto --model sonnet` session. The session touches `<work-dir>/done-<issue>` as its last step. Wait with a background command, not polling:
   `until [ -f <work-dir>/done-<N> ]; do sleep 5; done; echo done`
   (`run_in_background: true`, `timeout` 600000; re-arm if it expires and the task is still running). Use a scratch dir for `<work-dir>`.
   Still one window at a time, same reason. Test that the first window actually opens before relying on it.
